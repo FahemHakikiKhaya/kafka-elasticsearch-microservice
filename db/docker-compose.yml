@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  caralog_db_server:
+    image: "postgres:14.0"
+    ports:
+      - "5433:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: catalog_db
+      POSTGRES_PASSWORD: catalog_db_password
+      POSTGRES_DB: catalog_service
+    volumes:
+      - ./db_data/catalog_db_server/:/var/lib/postgresql/data
+  order_db_server:
+    image: "postgres:14.0"
+    ports:
+      - "5434:5432"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: order_db
+      POSTGRES_PASSWORD: order_db_password
+      POSTGRES_DB: order_service
+    volumes:
+      - ./db_data/order_db_server/:/var/lib/postgresql/data

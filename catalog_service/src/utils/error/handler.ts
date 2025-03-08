@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { AuthorizeError, NotFoundError, ValidationError } from "./errors";
 import { logger } from "../logger";
 
-export const HandlerErrorWithLogger = (
+export const HandleErrorWithLogger: ErrorRequestHandler = (
   error: Error,
   req: Request,
   res: Response,
@@ -21,13 +21,13 @@ export const HandlerErrorWithLogger = (
   });
 
   if (reportError) {
-    // error reporting tools implementation eg: Cloudwatch,Sentry etc;
     logger.error(error);
   } else {
-    logger.warn(error); // ignore common errors caused by user
-  }
+    logger.warn(error);
 
-  return res.status(status).json(data);
+    res.status(status).json(data);
+    return;
+  }
 };
 
 export const HandleUnCaughtException = async (error: Error) => {

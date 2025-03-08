@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "./status_codes";
+import { STATUS_CODES } from "./status-codes";
 
 class BaseError extends Error {
   public readonly name: string;

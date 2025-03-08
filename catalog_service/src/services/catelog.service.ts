@@ -45,4 +45,16 @@ export class CatalogService {
 
     return response;
   }
+
+  async getProductStock(ids: number[]) {
+    const products = await this.repository.findStock(ids);
+
+    if (!products) {
+      throw new Error("unable to find product stock details");
+    }
+
+    return products;
+  }
+
+  async handleBrokerMessage(data: any) {}
 }

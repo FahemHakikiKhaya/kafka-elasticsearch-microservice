@@ -2,18 +2,27 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import orderRoutes from "./routes/order.routes";
 import cartRoutes from "./routes/cart.routes";
+import { HandleErrorWithLogger, httpLogger } from "./utils";
+import { InitializeBroker } from "./service/broker.service";
 
-const app = express();
+export const ExpressApp = async () => {
+  const app = express();
 
-app.use(cors());
-app.use(express.json());
+  await InitializeBroker();
 
-app.use(orderRoutes);
-app.use(cartRoutes);
+  app.use(cors());
+  app.use(express.json());
+  app.use(httpLogger);
 
-app.use("/", (_req: Request, res: Response, _: NextFunction) => {
-  res.status(200).json({ message: "I am healthy!" });
-  return;
-});
+  app.use(orderRoutes);
+  app.use(cartRoutes);
 
-export default app;
+  app.use("/", (_req: Request, res: Response, _: NextFunction) => {
+    res.status(200).json({ message: "I am healthy!" });
+    return;
+  });
+
+  app.use(HandleErrorWithLogger);
+
+  return app;
+};

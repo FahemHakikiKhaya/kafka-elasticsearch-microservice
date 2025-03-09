@@ -23,7 +23,7 @@ export class BrokerService {
     });
 
     await MessageBroker.subscribe(
-      this.catalogService.handleBrokerMessage,
+      this.catalogService.handleBrokerMessage.bind(this.catalogService),
       "CatalogEvents"
     );
   }

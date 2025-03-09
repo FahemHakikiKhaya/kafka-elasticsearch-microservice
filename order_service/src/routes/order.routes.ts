@@ -13,39 +13,51 @@ router.post(
   "/orders",
   RequestAuthorizer,
   async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const user = req.user;
-    if (!user) {
-      next(new Error("User not found"));
-      return;
+    try {
+      const user = req.user;
+      if (!user) {
+        new Error("User not found");
+        return;
+      }
+      const response = await service.CreateOrder(user.id, repo, cartRepo);
+      return res.status(200).json(response);
+    } catch (error) {
+      next(error);
     }
-    const response = await service.CreateOrder(user.id, repo, cartRepo);
-    return res.status(200).json(response);
   }
 );
 
 router.get(
   "/orders",
   async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const user = req.user;
-    if (!user) {
-      next(new Error("User not found"));
-      return;
+    try {
+      const user = req.user;
+      if (!user) {
+        new Error("User not found");
+        return;
+      }
+      const response = await service.GetOrders(user.id, repo);
+      return res.status(200).json(response);
+    } catch (error) {
+      next(error);
     }
-    const response = await service.GetOrders(user.id, repo);
-    return res.status(200).json(response);
   }
 );
 
 router.get(
   "/orders/:id",
   async (req: Request, res: Response, next: NextFunction): Promise<any> => {
-    const user = req.user;
-    if (!user) {
-      next(new Error("User not found"));
-      return;
+    try {
+      const user = req.user;
+      if (!user) {
+        new Error("User not found");
+        return;
+      }
+      const response = await service.GetOrder(user.id, repo);
+      return res.status(200).json(response);
+    } catch (error) {
+      next(error);
     }
-    const response = await service.GetOrder(user.id, repo);
-    return res.status(200).json(response);
   }
 );
 
